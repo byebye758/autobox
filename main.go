@@ -35,7 +35,7 @@ func main() {
 	kport := new(kubernetes.K8sport)
 	for k, v := range p {
 		v := (strings.SplitN(v, ":", -1))
-		kport.Name = "port" + string(k+100)
+		kport.Name = "port" + strconv.FormatInt(int64(k), 10)
 
 		kport.Serviceport = stoint32(v[0])
 		kport.Containerport = stoint32(v[1])
@@ -51,9 +51,9 @@ func main() {
 	}
 	//fmt.Println(aa)
 	d, _ := aa.Deployjson()
-	//fmt.Println(string(d))
-	//fmt.Println(strconv.Quote(string(d)))
-	command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))
+	fmt.Println(string(d))
+	fmt.Println(strconv.Quote(string(d)))
+	//command.Kubectlapply(*kubectlpath, *kubeconfigpath, string(d))
 
 }
 func stoint32(s string) (i int32) {
