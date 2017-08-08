@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"autobox/modules/command"
+	"autobox/modules/command"
 	"autobox/modules/kubernetes"
 	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -21,8 +21,8 @@ var (
 	image   = app.Flag("image", "Set docker image name").Default("IMAGE").String()
 	//serviceport   = app.Flag("serviceport", "Set up the kubernetes internal service port").Default("0").Int32()
 	//containerport = app.Flag("containerport", "Set up the kubernetes internal container port").Default("0").Int32()
-	cmd  = app.Flag("cmd", "container exec cmd").Default("abc:bcd,aaa:bbb").Strings()
-	env  = app.Flag("env", "container exec cmd").Default("abc,bcd,aaa,bbb").Strings()
+	//cmd  = app.Flag("cmd", "container exec cmd").Default("abc:bcd,aaa:bbb").Strings()
+	//env  = app.Flag("env", "container exec cmd").Default("abc,bcd,aaa,bbb").Strings()
 	port = app.Flag("port", "").Default("21:21,22:22").String()
 )
 
@@ -53,8 +53,7 @@ func main() {
 	d, _ := aa.Deployjson()
 	fmt.Println(string(d))
 	fmt.Println(strconv.Quote(string(d)))
-	//command.Kubectlapply(*kubectlpath, *kubeconfigpath, string(d))
-
+	command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))
 }
 func stoint32(s string) (i int32) {
 	ii, _ := strconv.ParseInt(s, 10, 64)
