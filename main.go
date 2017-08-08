@@ -1,7 +1,7 @@
 package main
 
 import (
-	"autobox/modules/command"
+	//"autobox/modules/command"
 	"autobox/modules/kubernetes"
 	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -51,8 +51,9 @@ func main() {
 	}
 	//fmt.Println(aa)
 	d, _ := aa.Deployjson()
-	fmt.Println(string(d))
-	command.Kubectlapply(*kubectlpath, *kubeconfigpath, string(d))
+	//fmt.Println(string(d))
+	//fmt.Println(strconv.Quote(string(d)))
+	command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))
 
 }
 func stoint32(s string) (i int32) {
