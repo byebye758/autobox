@@ -1,0 +1,14 @@
+package: autobox
+import:
+- package: golang.org/x/text
+- package: k8s.io/api
+  subpackages:
+  - apps/v1beta1
+  - apps/v1
+- package: k8s.io/apimachinery
+  subpackages:
+  - pkg/apis/meta/v1
+- package: github.com/astaxie/beego
+  version: ^1.8.3
+  subpackages:
+  - logs
