@@ -51,9 +51,13 @@ func main() {
 	}
 	//fmt.Println(aa)
 	d, _ := aa.Deployjson()
-	fmt.Println(string(d))
-	fmt.Println(strconv.Quote(string(d)))
+	s, _ := aa.Servicejson()
+
+	fmt.Println(string(s))
+	// fmt.Println(strconv.Quote(string(d)))
 	command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))
+	command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(s)))
+
 }
 func stoint32(s string) (i int32) {
 	ii, _ := strconv.ParseInt(s, 10, 64)

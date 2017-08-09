@@ -11,19 +11,19 @@ import (
 	"k8s.io/api/core/v1"
 )
 
-type K8sport struct {
-	Name          string
-	Containerport int32
-	Serviceport   int32
-}
-type K8s struct {
-	Projectname string
-	Replace     int32
-	Namespace   string
-	Image       string
-	//Cmd         []string
-	Port []K8sport
-}
+// type K8sport struct {
+// 	Name          string
+// 	Containerport int32
+// 	Serviceport   int32
+// }
+// type K8s struct {
+// 	Projectname string
+// 	Replace     int32
+// 	Namespace   string
+// 	Image       string
+// 	//Cmd         []string
+// 	Port []K8sport
+// }
 
 func (k *K8s) Deployjson() ([]byte, error) {
 

@@ -1,5 +1,5 @@
 hash: 466312ef1a320c3286567e08fca03c599b6a9e99170495cb9b8c95537384fbd7
-updated: 2017-08-08T14:56:37.704221185+08:00
+updated: 2017-08-09T10:42:23.374300654+08:00
 imports:
 - name: github.com/alecthomas/template
   version: a0175ee3bccc567396460bf5acd36800cb10c49c
@@ -48,13 +48,12 @@ imports:
   version: ded73eae5db7e7a0ef6f55aace87a2873c5d2b74
   subpackages:
   - codec
-- name: golang.org/x/net
+- name: golang.org/x/net/http2
   version: f2499483f923065a842d38eb4c7f1927e6fc6e6d
   subpackages:
-  - http2
-  - http2/hpack
-  - idna
-  - lex/httplex
+  - hpack
+- name: golang.org/x/net/idna
+  version: f2499483f923065a842d38eb4c7f1927e6fc6e6d
 - name: golang.org/x/text
   version: 2910a502d2bf9e43193af9d68ca516529614eed3
   subpackages:
