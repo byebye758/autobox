@@ -11,7 +11,7 @@ import (
 func (k *K8s) Servicejson() ([]byte, error) {
 
 	typemeta := &metav1.TypeMeta{
-		Kind:       k.Projectname,
+		Kind:       "Service",
 		APIVersion: "v1",
 	}
 	matedata := &metav1.ObjectMeta{
