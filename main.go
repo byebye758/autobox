@@ -1,13 +1,15 @@
 package main
 
 import (
-	"autobox/modules/command"
+	//"autobox/modules/command"
 	"autobox/modules/kubernetes"
+	"autobox/modules/tools"
 	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"os"
 	"strconv"
-	"strings"
+	//"strings"
+	"errors"
 )
 
 var (
@@ -23,45 +25,90 @@ var (
 	//containerport = app.Flag("containerport", "Set up the kubernetes internal container port").Default("0").Int32()
 	//cmd  = app.Flag("cmd", "container exec cmd").Default("abc:bcd,aaa:bbb").Strings()
 	//env  = app.Flag("env", "container exec cmd").Default("abc,bcd,aaa,bbb").Strings()
-	port = app.Flag("port", "").Default("21:21,22:22").String()
+	port = app.Flag("port", "21:21,22:22").Default("0:0,0:0").String()
+	http = app.Flag("http", `url 方式发布您的应用 eg：--http="url=http://www.baidu.com,serverport=21,https=false,cafile=$cafilepath,keyfile=$keyfilepath,path=$Path";--http="url=https://www.163.com,serverport=22,https=true,cafile=$cafilepath,keyfile=$keyfilepath,path=$Path"`).Default(`url=http://www.baidu.com,serviceport=0,https=false,cafile=./cafilepath,keyfile=./keyfilepath`, `url=https://www.163.com,servicerport=0,https=true,cafile=./cafilepath1,keyfile=./keyfilepath1`).Strings()
 )
 
 func main() {
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
-	//fmt.Println(*kubectlpath, *cmd, *port)
-	pp := make([]kubernetes.K8sport, 0)
-	p := strings.SplitN(*port, ",", -1)
-	kport := new(kubernetes.K8sport)
-	for k, v := range p {
-		v := (strings.SplitN(v, ":", -1))
-		kport.Name = "port" + strconv.FormatInt(int64(k), 10)
+	aa, _ := tools.ArgToToolsStruct(*kubectlpath, *kubeconfigpath, *projectname, *namespace, *image, *port, *replace, *http)
 
-		kport.Serviceport = stoint32(v[0])
-		kport.Containerport = stoint32(v[1])
-		pp = append(pp, *kport)
-
-	}
-	aa := kubernetes.K8s{
-		Projectname: *projectname,
-		Replace:     *replace,
-		Namespace:   *namespace,
-		Image:       *image,
-		Port:        pp,
-	}
-	//fmt.Println(aa)
-	d, _ := aa.Deployjson()
+	d, _ := aa.DeployToJson()
 	s, _ := aa.Servicejson()
 
-	fmt.Println(string(s))
-	// fmt.Println(strconv.Quote(string(d)))
-	command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))
-	command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(s)))
+	sjson, _ := aa.StoJsons()
+	ingjson, _ := aa.IngressToJson()
 
+	//fmt.Println(aa)
+	//fmt.Println(string(s))
+	// fmt.Println(strconv.Quote(string(d)))
+
+	fmt.Println(string(d), string(s), string(ingjson))
+
+	// command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))
+	// command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(s)))
+	for _, v := range sjson {
+		//command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(v)))
+		fmt.Println(string(v))
+	}
+	// command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(ingjson)))
+
+	if aa.Image != "IMAGE" {
+		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))
+
+	}
+	err := servicecmd(aa.Port)
+	if err == nil {
+		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(s)))
+	}
+
+	err = secretcmd(aa.Ingress)
+	if err == nil {
+		for _, v := range sjson {
+			command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(v)))
+		}
+	}
+
+	err = ingresscmd(aa.Ingress)
+	if err == nil {
+		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(ingjson)))
+
+	}
 }
+
 func stoint32(s string) (i int32) {
 	ii, _ := strconv.ParseInt(s, 10, 64)
 	i = int32(ii)
 	return i
 
+}
+
+func servicecmd(ports []kubernetes.K8sport) error {
+	for _, v := range ports {
+		if v.ContainerPort == 0 {
+			return errors.New("no service port")
+
+		}
+	}
+	return nil
+}
+
+func ingresscmd(ingress []kubernetes.K8sIngress) error {
+	for _, v := range ingress {
+		if v.ServicePort == 0 {
+			return errors.New("no ingress port")
+
+		}
+	}
+	return nil
+}
+
+func secretcmd(ingress []kubernetes.K8sIngress) error {
+	for _, v := range ingress {
+		if v.Secret.CafilePath == `./cafilepath` {
+			return errors.New("no secretcafile ")
+		}
+	}
+	return nil
 }

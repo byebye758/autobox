@@ -11,27 +11,13 @@ import (
 	"k8s.io/api/core/v1"
 )
 
-// type K8sport struct {
-// 	Name          string
-// 	Containerport int32
-// 	Serviceport   int32
-// }
-// type K8s struct {
-// 	Projectname string
-// 	Replace     int32
-// 	Namespace   string
-// 	Image       string
-// 	//Cmd         []string
-// 	Port []K8sport
-// }
-
-func (k *K8s) Deployjson() ([]byte, error) {
+func (k *K8s) DeployToJson() ([]byte, error) {
 
 	matedata := &metav1.ObjectMeta{
-		Name:      k.Projectname,
-		Namespace: k.Namespace,
+		Name:      k.ProjectName,
+		Namespace: k.NameSpace,
 		Labels: map[string]string{
-			"app": k.Projectname,
+			"app": k.ProjectName,
 		},
 	}
 
@@ -44,14 +30,14 @@ func (k *K8s) Deployjson() ([]byte, error) {
 	containerports := make([]v1.ContainerPort, 0)
 	for _, v := range k.Port {
 		containerport.Name = v.Name
-		containerport.ContainerPort = v.Containerport
+		containerport.ContainerPort = v.ContainerPort
 		containerports = append(containerports, *containerport)
 	}
 
 	container := &v1.Container{
 		Command: []string{},
 		Image:   k.Image,
-		Name:    k.Projectname,
+		Name:    k.ProjectName,
 		Ports:   containerports,
 	}
 	containers := make([]v1.Container, 0)
@@ -59,7 +45,7 @@ func (k *K8s) Deployjson() ([]byte, error) {
 	template := &v1.PodTemplateSpec{
 		ObjectMeta: metav1.ObjectMeta{
 			Labels: map[string]string{
-				"app": k.Projectname,
+				"app": k.ProjectName,
 			},
 		},
 		Spec: v1.PodSpec{
@@ -71,7 +57,7 @@ func (k *K8s) Deployjson() ([]byte, error) {
 		Replicas: &k.Replace,
 		Selector: &metav1.LabelSelector{
 			MatchLabels: map[string]string{
-				"app": k.Projectname,
+				"app": k.ProjectName,
 			},
 		},
 		Template: *template,
@@ -86,4 +72,5 @@ func (k *K8s) Deployjson() ([]byte, error) {
 	data, err := json.Marshal(deploy)
 
 	return data, err
+
 }

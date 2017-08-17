@@ -1,0 +1,16 @@
+package tools
+
+import (
+	"autobox/modules/kubernetes"
+)
+
+type ToolsParser struct {
+	KubectlPath    string
+	KubeconfigPath string
+	ProjectName    string
+	Namespace      string
+	Replace        int32
+	Image          string
+	Port           []kubernetes.K8sport
+	http           []kubernetes.K8sIngress
+}

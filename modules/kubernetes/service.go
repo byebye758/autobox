@@ -15,10 +15,10 @@ func (k *K8s) Servicejson() ([]byte, error) {
 		APIVersion: "v1",
 	}
 	matedata := &metav1.ObjectMeta{
-		Name:      k.Projectname,
-		Namespace: k.Namespace,
+		Name:      k.ProjectName,
+		Namespace: k.NameSpace,
 		Labels: map[string]string{
-			"app": k.Projectname,
+			"app": k.ProjectName,
 		},
 	}
 	serviceport := new(v1.ServicePort)
@@ -27,16 +27,16 @@ func (k *K8s) Servicejson() ([]byte, error) {
 	for k1, v := range k.Port {
 
 		serviceport.Name = "port" + strconv.FormatInt(int64(k1), 10)
-		serviceport.Port = v.Containerport
+		serviceport.Port = v.ContainerPort
 		serviceport.TargetPort = intstr.IntOrString{
-			IntVal: v.Serviceport,
+			IntVal: v.ServicePort,
 		}
 		serviceports = append(serviceports, *serviceport)
 	}
 	spec := &v1.ServiceSpec{
 		Ports: serviceports,
 		Selector: map[string]string{
-			"app": k.Projectname,
+			"app": k.ProjectName,
 		},
 	}
 
