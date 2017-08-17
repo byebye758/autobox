@@ -19,7 +19,7 @@ var (
 	projectname    = app.Flag("Projectname", "Set  App  Project  Name. The Jenkins project name is recommended").Default("JOB_NAME").String()
 	namespace      = app.Flag("namespace", `eg: --namespace="default"`).Default("default").String()
 
-	replace = app.Flag("replace", "Set kubernetes pod nubmber").Default("1").Int32()
+	replace = app.Flag("replace", "Set kubernetes pod nubmber").Default("0").Int32()
 	image   = app.Flag("image", "Set docker image name").Default("IMAGE").String()
 	//serviceport   = app.Flag("serviceport", "Set up the kubernetes internal service port").Default("0").Int32()
 	//containerport = app.Flag("containerport", "Set up the kubernetes internal container port").Default("0").Int32()
