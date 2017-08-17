@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"autobox/modules/command"
+	"autobox/modules/command"
 	"autobox/modules/kubernetes"
 	"autobox/modules/tools"
 	"fmt"
