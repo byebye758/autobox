@@ -2,7 +2,7 @@ package tools
 
 import (
 	"autobox/modules/kubernetes"
-	"fmt"
+	//"fmt"
 	//"gopkg.in/alecthomas/kingpin.v2"
 	//"fmt"
 	"io/ioutil"
