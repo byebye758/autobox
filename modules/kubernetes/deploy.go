@@ -36,9 +36,8 @@ func (k *K8s) DeployToJson() ([]byte, error) {
 	}
 	var cpu v1.ResourceName
 	cpu = "cpu"
-	// cpuload := resource.Quantity{
-	// 	Format: "400m",
-	// }
+	//cpuload := resource.Quantity{}
+	cpuload := resource.MustParse("50m")
 
 	container := &v1.Container{
 		Command: []string{},
@@ -47,7 +46,7 @@ func (k *K8s) DeployToJson() ([]byte, error) {
 		Ports:   containerports,
 		Resources: v1.ResourceRequirements{
 			Requests: v1.ResourceList{
-				cpu: "400m",
+				cpu: cpuload,
 			},
 		},
 	}
