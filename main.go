@@ -82,6 +82,7 @@ func main() {
 	err = autoscalcmd(aa.K8sAutoScal)
 	if err == nil {
 		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(auto)))
+		fmt.Println(string(auto))
 	}
 }
 
