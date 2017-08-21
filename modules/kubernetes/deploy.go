@@ -9,6 +9,7 @@ import (
 	//"strings"
 	//"github.com/astaxie/beego/logs"
 	"k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 )
 
 func (k *K8s) DeployToJson() ([]byte, error) {
@@ -33,12 +34,22 @@ func (k *K8s) DeployToJson() ([]byte, error) {
 		containerport.ContainerPort = v.ContainerPort
 		containerports = append(containerports, *containerport)
 	}
+	var cpu v1.ResourceName
+	cpu = "cpu"
+	cpuload := resource.Quantity{
+		Format: "400m",
+	}
 
 	container := &v1.Container{
 		Command: []string{},
 		Image:   k.Image,
 		Name:    k.ProjectName,
 		Ports:   containerports,
+		Resources: v1.ResourceRequirements{
+			Requests: v1.ResourceList{
+				cpu: cpuload,
+			},
+		},
 	}
 	containers := make([]v1.Container, 0)
 	containers = append(containers, *container)
