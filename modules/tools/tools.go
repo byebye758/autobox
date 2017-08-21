@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func ArgToToolsStruct(kubectlpath, kubeconfigpath, projectname, namespace, image, port string, replace int32, http []string) (k8s kubernetes.K8s, err error) {
+func ArgToToolsStruct(kubectlpath, kubeconfigpath, projectname, namespace, image, port string, replace int32, http, autoscal []string) (k8s kubernetes.K8s, err error) {
 
 	pp := make([]kubernetes.K8sport, 0)
 	p := strings.SplitN(port, ",", -1)
@@ -27,6 +27,7 @@ func ArgToToolsStruct(kubectlpath, kubeconfigpath, projectname, namespace, image
 	}
 
 	ingresss, _ := HttpParser(http, projectname, namespace)
+	auto, _ := AutoscalParser(autoscal)
 	//fmt.Println(ingresss, err)
 	k8s = kubernetes.K8s{
 		ProjectName: projectname,
@@ -35,6 +36,7 @@ func ArgToToolsStruct(kubectlpath, kubeconfigpath, projectname, namespace, image
 		Port:        pp,
 		Ingress:     ingresss,
 		Replace:     replace,
+		K8sAutoScal: auto,
 	}
 	return k8s, nil
 
@@ -94,6 +96,22 @@ func HttpParser(http []string, projectname, namespace string) (ingresss []kubern
 	}
 	return ingresss, nil
 
+}
+
+func AutoscalParser(autoscal []string) (auto kubernetes.K8sAutoScal, err error) {
+	for _, v := range autoscal {
+		pp := strings.SplitN(v, "=", -1)
+		switch pp[0] {
+		case "min":
+			auto.Min = stoint32(pp[1])
+		case "max":
+			auto.Max = stoint32(pp[1])
+		case "cpuload":
+			auto.Max = stoint32(pp[1])
+		}
+	}
+	err = nil
+	return auto, err
 }
 
 func stoint32(s string) (i int32) {
