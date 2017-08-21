@@ -40,6 +40,7 @@ func main() {
 
 	sjson, _ := aa.StoJsons()
 	ingjson, _ := aa.IngressToJson()
+	auto, _ := aa.AutoscalToJson()
 
 	//fmt.Println(aa)
 	//fmt.Println(string(s))
@@ -78,6 +79,10 @@ func main() {
 		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(ingjson)))
 
 	}
+	err = autoscalcmd(aa.K8sAutoScal)
+	if err == nil {
+		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(auto)))
+	}
 }
 
 func stoint32(s string) (i int32) {
@@ -112,6 +117,13 @@ func secretcmd(ingress []kubernetes.K8sIngress) error {
 		if v.Secret.CafilePath == `./cafilepath` {
 			return errors.New("no secretcafile ")
 		}
+	}
+	return nil
+}
+
+func autoscalcmd(auto kubernetes.K8sAutoScal) error {
+	if auto.Cpuload == 0 {
+		return errors.New("no autoscal ")
 	}
 	return nil
 }
