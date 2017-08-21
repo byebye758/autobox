@@ -100,6 +100,7 @@ func HttpParser(http []string, projectname, namespace string) (ingresss []kubern
 }
 
 func AutoscalParser(autoscal []string) (auto kubernetes.K8sAutoScal, err error) {
+	fmt.Println(autoscal)
 	for _, v := range autoscal {
 		pp := strings.SplitN(v, "=", -1)
 		switch pp[0] {
