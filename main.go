@@ -33,6 +33,7 @@ var (
 func main() {
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+	fmt.Println(*autoscal)
 	aa, _ := tools.ArgToToolsStruct(*kubectlpath, *kubeconfigpath, *projectname, *namespace, *image, *port, *replace, *http, *autoscal)
 
 	d, _ := aa.DeployToJson()
