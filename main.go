@@ -84,6 +84,7 @@ func main() {
 		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(auto)))
 		fmt.Println(string(auto))
 	}
+	fmt.Println(string(auto))
 }
 
 func stoint32(s string) (i int32) {
