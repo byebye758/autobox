@@ -33,29 +33,17 @@ var (
 func main() {
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
-	fmt.Println(*autoscal)
 	aa, _ := tools.ArgToToolsStruct(*kubectlpath, *kubeconfigpath, *projectname, *namespace, *image, *port, *replace, *http, *autoscal)
-
 	d, _ := aa.DeployToJson()
 	s, _ := aa.Servicejson()
 
 	sjson, _ := aa.StoJsons()
 	ingjson, _ := aa.IngressToJson()
 	auto, _ := aa.AutoscalToJson()
-
+	fmt.Println(aa)
 	//fmt.Println(aa)
 	//fmt.Println(string(s))
 	// fmt.Println(strconv.Quote(string(d)))
-
-	fmt.Println(string(d), string(s), string(ingjson))
-
-	// command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))
-	// command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(s)))
-	for _, v := range sjson {
-		//command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(v)))
-		fmt.Println(string(v))
-	}
-	// command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(ingjson)))
 
 	if aa.Image != "IMAGE" {
 		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))

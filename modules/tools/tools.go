@@ -111,6 +111,7 @@ func AutoscalParser(autoscal []string) (auto kubernetes.K8sAutoScal, err error) 
 		}
 	}
 	err = nil
+
 	return auto, err
 }
 
