@@ -2,7 +2,7 @@ package tools
 
 import (
 	"autobox/modules/kubernetes"
-	"fmt"
+	//"fmt"
 	//"gopkg.in/alecthomas/kingpin.v2"
 	//"fmt"
 	"io/ioutil"
@@ -28,7 +28,7 @@ func ArgToToolsStruct(kubectlpath, kubeconfigpath, projectname, namespace, image
 
 	ingresss, _ := HttpParser(http, projectname, namespace)
 	auto, _ := AutoscalParser(autoscal)
-	fmt.Println(auto)
+	//fmt.Println(auto)
 	//fmt.Println(ingresss, err)
 	k8s = kubernetes.K8s{
 		ProjectName: projectname,
@@ -115,7 +115,7 @@ func AutoscalParser(autoscal string) (auto kubernetes.K8sAutoScal, err error) {
 		}
 	}
 	err = nil
-	fmt.Println(auto)
+	//fmt.Println(auto)
 	return auto, err
 }
 

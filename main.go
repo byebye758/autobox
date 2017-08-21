@@ -34,16 +34,13 @@ func main() {
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	aa, _ := tools.ArgToToolsStruct(*kubectlpath, *kubeconfigpath, *projectname, *namespace, *image, *port, *replace, *http, *autoscal)
+	fmt.Println(aa)
 	d, _ := aa.DeployToJson()
 	s, _ := aa.Servicejson()
 
 	sjson, _ := aa.StoJsons()
 	ingjson, _ := aa.IngressToJson()
 	auto, _ := aa.AutoscalToJson()
-	fmt.Println(aa)
-	//fmt.Println(aa)
-	//fmt.Println(string(s))
-	// fmt.Println(strconv.Quote(string(d)))
 
 	if aa.Image != "IMAGE" {
 		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(d)))
@@ -71,9 +68,7 @@ func main() {
 	err = autoscalcmd(aa.K8sAutoScal)
 	if err == nil {
 		command.Kubectlapply(*kubectlpath, *kubeconfigpath, strconv.Quote(string(auto)))
-		fmt.Println(string(auto))
 	}
-	fmt.Println(string(auto))
 }
 
 func stoint32(s string) (i int32) {
