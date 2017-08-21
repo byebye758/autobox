@@ -106,12 +106,11 @@ func AutoscalParser(autoscal string) (auto kubernetes.K8sAutoScal, err error) {
 		pp := strings.SplitN(v, "=", -1)
 		switch pp[0] {
 		case "min":
-			fmt.Println(pp[1])
 			auto.Min = stoint32(pp[1])
 		case "max":
 			auto.Max = stoint32(pp[1])
 		case "cpuload":
-			auto.Max = stoint32(pp[1])
+			auto.Cpuload = stoint32(pp[1])
 
 		}
 	}
