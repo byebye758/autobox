@@ -61,7 +61,7 @@ func (k *K8s) DeployToJson() ([]byte, error) {
 		Spec: v1.PodSpec{
 			Containers: containers,
 			NodeSelector: map[string]string{
-				"infra-role": "app",
+				"infra.role": "app",
 			},
 		},
 	}
