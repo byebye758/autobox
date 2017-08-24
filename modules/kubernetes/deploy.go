@@ -37,7 +37,8 @@ func (k *K8s) DeployToJson() ([]byte, error) {
 	var cpu v1.ResourceName
 	cpu = "cpu"
 	//cpuload := resource.Quantity{}
-	cpuload := resource.MustParse("50m")
+	k.K8sAutoScal.Cpuload
+	cpuload := resource.MustParse(k.K8sAutoScal.Cpuload)
 
 	container := &v1.Container{
 		Command: []string{},
@@ -60,6 +61,9 @@ func (k *K8s) DeployToJson() ([]byte, error) {
 		},
 		Spec: v1.PodSpec{
 			Containers: containers,
+			NodeSelector: map[string]string{
+				"infra-role": "app",
+			},
 		},
 	}
 
