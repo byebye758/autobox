@@ -110,8 +110,9 @@ func AutoscalParser(autoscal string) (auto kubernetes.K8sAutoScal, err error) {
 		case "max":
 			auto.Max = stoint32(pp[1])
 		case "cpuload":
+			auto.Cpuload = stoint32(pp[1])
+		case "cpu":
 			auto.Cpuload = pp[1]
-
 		}
 	}
 	err = nil
