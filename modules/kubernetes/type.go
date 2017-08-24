@@ -36,5 +36,5 @@ type K8sIngress struct {
 type K8sAutoScal struct {
 	Min     int32
 	Max     int32
-	Cpuload int32
+	Cpuload string
 }

@@ -37,7 +37,6 @@ func (k *K8s) DeployToJson() ([]byte, error) {
 	var cpu v1.ResourceName
 	cpu = "cpu"
 	//cpuload := resource.Quantity{}
-	k.K8sAutoScal.Cpuload
 	cpuload := resource.MustParse(k.K8sAutoScal.Cpuload)
 
 	container := &v1.Container{
